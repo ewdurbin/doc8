@@ -66,10 +66,10 @@ class ParsedFile:
                 "dump_internals": False,
                 "dump_transforms": False,
             }
-            opt = frontend.OptionParser(components=[parser], defaults=defaults)
-            doc = utils.new_document(
-                source_path=self.filename, settings=opt.get_default_values()
-            )
+            settings = frontend.get_default_settings(parser)
+            for k, v in defaults.items():
+                settings.setdefault(k, v)
+            doc = utils.new_document(source_path=self.filename, settings=settings)
             parser.parse(self.contents, doc)
             self._doc = doc
         return self._doc
